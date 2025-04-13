@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREDY EXPRESS - Solicitud de Préstamo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #e74c3c;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f8f9fa;
+            transition: border 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+        .col {
+            flex: 1;
+        }
+        button {
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        .result-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 5px solid #3498db;
+        }
+        .amount-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .tax-info {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        .slider-container {
+            margin-top: 15px;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #2980b9;
+            transform: scale(1.1);
+        }
+        
+        /* Estilos del panel de administración */
+        .admin-panel {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: 30px;
+        }
+        .admin-panel h2 {
+            color: #e74c3c;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .application-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+        .application-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .application-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .application-details p {
+            margin: 5px 0;
+        }
+        .application-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-approve {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        .btn-reject {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .search-filter input {
+            flex: 1;
+        }
+        .status-pending {
+            border-left-color: #f39c12;
+        }
+        .status-approved {
+            border-left-color: #2ecc71;
+        }
+        .status-rejected {
+            border-left-color: #e74c3c;
+        }
+        .whatsapp-icon {
+            color: #25D366;
+            margin-right: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="form-container">
+        <div class="logo">CREDY EXPRESS</div>
+        <h1>Solicitud de Préstamo Rápido</h1>
+        
+        <form id="loanForm">
+            <!-- [Todo el formulario anterior permanece igual] -->
+            <!-- ... (mantén todo el formulario de solicitud igual que antes) ... -->
+        </form>
+    </div>
+
+    <!-- Panel de Administración -->
+    <div class="admin-panel" id="adminPanel">
+        <h2><i class="fas fa-cog"></i> Panel de Administración</h2>
+        
+        <div class="search-filter">
+            <input type="text" id="searchApplications" placeholder="Buscar solicitudes..." onkeyup="filterApplications()">
+            <select id="filterStatus" onchange="filterApplications()">
+                <option value="all">Todas</option>
+                <option value="pending">Pendientes</option>
+                <option value="approved">Aprobadas</option>
+                <option value="rejected">Rechazadas</option>
+            </select>
+        </div>
+        
+        <div id="applicationsList">
+            <!-- Las solicitudes se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+
+    <script>
+        // Simulamos una "base de datos" de solicitudes
+        let loanApplications = JSON.parse(localStorage.getItem('loanApplications')) || [];
+        
+        // [Las funciones anteriores permanecen iguales]
+        // ... (mantén todas las funciones anteriores como updateCountryCode, updateLoanDetails, etc.) ...
+        
+        // Función para enviar el formulario
+        document.getElementById('loanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Recoger todos los datos del formulario
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                country: document.getElementById('country').value,
+                phoneCode: document.getElementById('phoneCode').value,
+                phone: document.getElementById('phone').value,
+                city: document.getElementById('city').value,
+                address: document.getElementById('address').value,
+                loanAmount: parseInt(document.getElementById('loanAmount').value),
+                loanTerm: parseInt(document.getElementById('loanTerm').value),
+                ref1Name: document.getElementById('ref1Name').value,
+                ref1Phone: document.getElementById('ref1Phone').value,
+                ref1Relation: document.getElementById('ref1Relation').value,
+                ref2Name: document.getElementById('ref2Name').value,
+                ref2Phone: document.getElementById('ref2Phone').value,
+                ref2Relation: document.getElementById('ref2Relation').value,
+                status: 'pending',
+                date: new Date().toISOString(),
+                monthlyPayment: document.getElementById('monthlyPayment').textContent,
+                totalPayment: document.getElementById('totalPayment').textContent,
+                approvalTax: document.getElementById('approvalTax').textContent
+            };
+            
+            // Agregar a nuestras "solicitudes"
+            loanApplications.push(formData);
+            localStorage.setItem('loanApplications', JSON.stringify(loanApplications));
+            
+            alert('Solicitud enviada con éxito. Nos pondremos en contacto contigo pronto.');
+            this.reset();
+            updateLoanDetails();
+            
+            // Si es admin, actualizar la lista
+            if (window.location.search.includes('?admin')) {
+                renderApplications();
+            }
+        });
+        
+        // Función para renderizar las solicitudes en el panel de admin
+        function renderApplications(filter = '') {
+            const applicationsList = document.getElementById('applicationsList');
+            applicationsList.innerHTML = '';
+            
+            const statusFilter = document.getElementById('filterStatus').value;
+            const searchTerm = document.getElementById('searchApplications').value.toLowerCase();
+            
+            const filteredApplications = loanApplications.filter(app => {
+                const matchesStatus = statusFilter === 'all' || app.status === statusFilter;
+                const matchesSearch = 
+                    app.firstName.toLowerCase().includes(searchTerm) ||
+                    app.lastName.toLowerCase().includes(searchTerm) ||
+                    app.email.toLowerCase().includes(searchTerm) ||
+                    app.phone.includes(searchTerm);
+                return matchesStatus && matchesSearch;
+            });
+            
+            if (filteredApplications.length === 0) {
+                applicationsList.innerHTML = '<p>No hay solicitudes que coincidan con los criterios.</p>';
+                return;
+            }
+            
+            filteredApplications.forEach((app, index) => {
+                const appCard = document.createElement('div');
+                appCard.className = `application-card status-${app.status}`;
+                
+                appCard.innerHTML = `
+                    <h3>${app.firstName} ${app.lastName}</h3>
+                    <div class="application-details">
+                        <p><strong>Monto:</strong> $${app.loanAmount.toLocaleString()}</p>
+                        <p><strong>Plazo:</strong> ${app.loanTerm} años</p>
+                        <p><strong>Teléfono:</strong> ${app.phoneCode} ${app.phone}</p>
+                        <p><strong>Email:</strong> ${app.email}</p>
+                        <p><strong>Pago Mensual:</strong> ${app.monthlyPayment}</p>
+                        <p><strong>Impuesto (10%):</strong> ${app.approvalTax}</p>
+                        <p><strong>Fecha:</strong> ${new Date(app.date).toLocaleDateString()}</p>
+                        <p><strong>Estado:</strong> <span class="status-${app.status}">${getStatusText(app.status)}</span></p>
+                    </div>
+                    <div class="application-actions">
+                        ${app.status === 'pending' ? `
+                            <button class="btn-approve" onclick="approveApplication(${index})">
+                                <i class="fas fa-check"></i> Aprobar
+                            </button>
+                            <button class="btn-reject" onclick="rejectApplication(${index})">
+                                <i class="fas fa-times"></i> Rechazar
+                            </button>
+                        ` : ''}
+                        ${app.status === 'approved' ? `
+                            <button onclick="sendWhatsAppMessage(${index})">
+                                <i class="fab fa-whatsapp whatsapp-icon"></i> Enviar WhatsApp
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+                
+                applicationsList.appendChild(appCard);
+            });
+        }
+        
+        function getStatusText(status) {
+            const statusTexts = {
+                'pending': 'Pendiente',
+                'approved': 'Aprobado',
+                'rejected': 'Rechazado'
+            };
+            return statusTexts[status] || status;
+        }
+        
+        function approveApplication(index) {
+            loanApplications[index].status = 'approved';
+            localStorage.setItem('loanApplications', JSON.stringify(loanApplications));
+            renderApplications();
+            
+            // Opcional: enviar WhatsApp automáticamente al aprobar
+            sendWhatsAppMessage(index);
+        }
+        
+        function rejectApplication(index) {
+            loanApplications[index].status = 'rejected';
+            localStorage.setItem('loanApplications', JSON.stringify(loanApplications));
+            renderApplications();
+            
+            // Opcional: enviar email o notificación de rechazo
+        }
+        
+        function sendWhatsAppMessage(index) {
+            const app = loanApplications[index];
+            const phoneNumber = app.phoneCode + app.phone.replace(/\D/g, '');
+            const message = `Hola ${app.firstName}, tu préstamo de $${app.loanAmount.toLocaleString()} ha sido aprobado. ` +
+                          `Para recibir el dinero, debes pagar el impuesto de aprobación del 10% (${app.approvalTax}). ` +
+                          `Este impuesto será reembolsado al completar el pago del préstamo. ` +
+                          `Por favor contáctanos para proceder con el pago y desembolso.`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        function filterApplications() {
+            renderApplications();
+        }
+        
+        // Mostrar panel de admin si el parámetro ?admin está en la URL
+        if (window.location.search.includes('?admin')) {
+            document.getElementById('adminPanel').style.display = 'block';
+            renderApplications();
+        } else {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
